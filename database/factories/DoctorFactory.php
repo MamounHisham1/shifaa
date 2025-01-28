@@ -22,7 +22,7 @@ class DoctorFactory extends Factory
             'user_id' => User::factory(),
             'speciality' => fake()->randomElement(['Cardiologist', 'Orthopedic Surgeon', 'Neurologist', 'Dermatologist', 'Pediatrician', 'Psychiatrist', 'Gynecologist', 'General Surgeon']),
             'qualification' => fake()->randomElement(['MBBS', 'MD', 'MBBS, MD', 'MBBS, MS', 'PhD in Medicine']),
-            'experience' => fake()->numberBetween(1, 30) . ' years',
+            'experience' => fake()->numberBetween(1, 50),
             'available_days' => fake()->randomElement(['Monday, Wednesday, Friday', 'Tuesday, Thursday, Saturday', 'Monday to Friday']),
             'consultation_fee' => fake()->numberBetween(100, 10000),
             'license_number' => fake()->unique()->bothify('LIC-#####-####'),

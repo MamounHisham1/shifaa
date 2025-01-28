@@ -16,6 +16,7 @@ class ScheduleResource extends JsonResource
     {
         return [
             'doctor' => DoctorResource::make($this->doctor),
+            'appointments' => AppointmentResource::collection($this->appointments),
             'date' => $this->date,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
@@ -23,6 +24,7 @@ class ScheduleResource extends JsonResource
             'is_available' => $this->is_available,
             'notes' => $this->notes,
             'max_appointments' => $this->max_appointments,
+            'link' => route('schedules.show', $this->id),
         ];
     }
 }

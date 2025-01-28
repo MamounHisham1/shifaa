@@ -24,6 +24,7 @@ class DoctorResource extends JsonResource
             'license_number' => $this->license_number ?? null,
             'bio' => $this->bio ?? null,
             'status' => $this->status,
+            'link' => route('doctors.show', $this->id),
         ];
     }
 }

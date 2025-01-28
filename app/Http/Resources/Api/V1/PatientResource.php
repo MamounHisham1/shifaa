@@ -17,7 +17,6 @@ class PatientResource extends JsonResource
         return [
             'personal_details' => UserResource::make($this->user),
             'blood_group' => $this->blood_group ?? null,
-            'genotype' => $this->genotype ?? null,
             'weight' => $this->weight ?? null,
             'height' => $this->height ?? null,
             'allergies' => $this->allergies ?? null,
@@ -28,6 +27,7 @@ class PatientResource extends JsonResource
             'emergency_contact_name' => $this->emergency_contact_name ?? null,
             'emergency_contact_phone' => $this->emergency_contact_phone ?? null,
             'emergency_contact_relationship' => $this->emergency_contact_relationship ?? null,
+            'link' => route('patients.show', $this->id),
         ];
     }
 }
