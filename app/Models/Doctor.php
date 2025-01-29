@@ -13,8 +13,8 @@ class Doctor extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function user(): BelongsTo
+    public function profile(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Profile::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Profile;
 use App\Models\User;
 use Faker\Provider\UserAgent;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,7 +20,7 @@ class PatientFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'profile_id' => Profile::factory(),
             'blood_group' => fake()->randomElement(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']),
             'weight' => fake()->randomFloat(1, 40, 120),
             'height' => fake()->randomFloat(2, 1.5, 2.1),

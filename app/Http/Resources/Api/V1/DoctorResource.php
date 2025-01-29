@@ -15,7 +15,7 @@ class DoctorResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'personal_details' => UserResource::make($this->user),
+            'personal_details' => ProfileResource::make($this->profile),
             'speciality' => $this->speciality,
             'qualification' => $this->qualification,
             'experience' => $this->experience,

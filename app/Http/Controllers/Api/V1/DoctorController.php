@@ -29,22 +29,24 @@ class DoctorController extends Controller
                 AllowedFilter::exact('available_days'),
 
                 AllowedFilter::callback('name', function ($query, $value) {
-                    $query->whereHas('user', function ($query) use ($value) {
-                        $query->where('name', 'like', "%{$value}%");
+                    $query->whereHas('profile', function ($query) use ($value) {
+                        $query->whereHas('user', function ($query) use ($value) {
+                            $query->where('name', 'like', "%{$value}%");
+                        });
                     });
                 }),
                 AllowedFilter::callback('city', function ($query, $value) {
-                    $query->whereHas('user', function ($query) use ($value) {
+                    $query->whereHas('profile', function ($query) use ($value) {
                         $query->where('city', 'like', "%{$value}%");
                     });
                 }),
                 AllowedFilter::callback('state', function ($query, $value) {
-                    $query->whereHas('user', function ($query) use ($value) {
+                    $query->whereHas('profile', function ($query) use ($value) {
                         $query->where('state', 'like', "%{$value}%");
                     });
                 }),
                 AllowedFilter::callback('country', function ($query, $value) {
-                    $query->whereHas('user', function ($query) use ($value) {
+                    $query->whereHas('profile', function ($query) use ($value) {
                         $query->where('country', 'like', "%{$value}%");
                     });
                 }),
@@ -81,8 +83,7 @@ class DoctorController extends Controller
                 'experience',
                 'consultation_fee',
                 'status',
-                'created_at',
-                AllowedSort::field('user.name', 'users.name'),
+                AllowedSort::field('profile.user.name', 'profile.users.name'),
             ])
             ->paginate($request->per_page ?? 15)
             ->appends($request->query());
@@ -91,19 +92,11 @@ class DoctorController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreDoctorRequest $request)
     {
-        //
+        return DoctorResource::make(Doctor::create($request->validated()));
     }
 
     /**
@@ -112,14 +105,6 @@ class DoctorController extends Controller
     public function show(Doctor $doctor)
     {
         return DoctorResource::make($doctor);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Doctor $doctor)
-    {
-        //
     }
 
     /**

@@ -11,7 +11,7 @@ class StoreDoctorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class StoreDoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'profile_id' => ['required', 'integer', 'exists:profiles,id'], 
+            'speciality' => ['required', 'string', 'max:255'],
+            'qualification' => ['required', 'string'],
+            'experience' => ['required', 'string', 'max:255'],
+            'available_days' => ['nullable', 'string', 'max:255'], 
+            'consultation_fee' => ['nullable', 'integer', 'min:0'],
+            'license_number' => ['nullable', 'string', 'max:255'],
+            'bio' => ['nullable', 'string'],
+            'status' => ['required', 'string', 'in:active,inactive']
         ];
     }
 }

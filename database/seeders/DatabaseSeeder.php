@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->create([
             'name' => 'Admin',
+            'type' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'),
         ]);
@@ -28,6 +29,5 @@ class DatabaseSeeder extends Seeder
         Patient::factory(400)->create();
         Schedule::factory(300)->create();
         Appointment::factory(300)->create();
-
     }
 }

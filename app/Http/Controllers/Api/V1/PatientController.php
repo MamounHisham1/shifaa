@@ -28,27 +28,29 @@ class PatientController extends Controller
             'family_history',
             'emergency_contact_name',
             'emergency_contact_phone',
-            
+
             AllowedFilter::exact('blood_group'),
             AllowedFilter::exact('emergency_contact_relationship'),
 
             AllowedFilter::callback('name', function ($query, $value) {
-                $query->whereHas('user', function ($query) use ($value) {
-                    $query->where('name', 'like', "%{$value}%");
+                $query->whereHas('profile', function ($query) use ($value) {
+                    $query->whereHas('user', function ($query) use ($value) {
+                        $query->where('name', 'like', "%{$value}%");
+                    });
                 });
             }),
             AllowedFilter::callback('city', function ($query, $value) {
-                $query->whereHas('user', function ($query) use ($value) {
-                    $query->where('city', 'like', "%{$value}%");
+                $query->whereHas('profile', function ($query) use ($value) {
+                    $query->whereRelation('city', 'like', "%{$value}%");
                 });
             }),
             AllowedFilter::callback('state', function ($query, $value) {
-                $query->whereHas('user', function ($query) use ($value) {
+                $query->whereHas('profile', function ($query) use ($value) {
                     $query->where('state', 'like', "%{$value}%");
                 });
             }),
             AllowedFilter::callback('country', function ($query, $value) {
-                $query->whereHas('user', function ($query) use ($value) {
+                $query->whereHas('profile', function ($query) use ($value) {
                     $query->where('country', 'like', "%{$value}%");
                 });
             }),
@@ -80,8 +82,6 @@ class PatientController extends Controller
             'weight',
             'height',
             'blood_group',
-            'created_at',
-            AllowedSort::field('user.name', 'users.name'),
         ])
         ->paginate($request->per_page ?? 15)
         ->appends($request->query());
