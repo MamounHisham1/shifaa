@@ -15,16 +15,16 @@ class DoctorResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'personal_details' => ProfileResource::make($this->profile),
             'speciality' => $this->speciality,
             'qualification' => $this->qualification,
             'experience' => $this->experience,
-            'available_days' => $this->available_days ?? null,
-            'consultation_fee' => $this->consultation_fee ?? null,
-            'license_number' => $this->license_number ?? null,
-            'bio' => $this->bio ?? null,
+            'available_days' => $this->available_days,
+            'consultation_fee' => $this->consultation_fee,
+            'license_number' => $this->license_number,
+            'bio' => $this->bio,
             'status' => $this->status,
-            'link' => route('doctors.show', $this->id),
         ];
     }
 }

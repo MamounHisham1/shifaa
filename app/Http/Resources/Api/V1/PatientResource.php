@@ -15,19 +15,19 @@ class PatientResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'personal_details' => ProfileResource::make($this->profile),
-            'blood_group' => $this->blood_group ?? null,
-            'weight' => $this->weight ?? null,
-            'height' => $this->height ?? null,
-            'allergies' => $this->allergies ?? null,
-            'medications' => $this->medications ?? null,
-            'surgeries' => $this->surgeries ?? null,
-            'diseases' => $this->diseases ?? null,
-            'family_history' => $this->family_history ?? null,
-            'emergency_contact_name' => $this->emergency_contact_name ?? null,
-            'emergency_contact_phone' => $this->emergency_contact_phone ?? null,
-            'emergency_contact_relationship' => $this->emergency_contact_relationship ?? null,
-            'link' => route('patients.show', $this->id),
+            'blood_group' => $this->blood_group,
+            'weight' => $this->weight,
+            'height' => $this->height,
+            'allergies' => $this->allergies,
+            'medications' => $this->medications,
+            'surgeries' => $this->surgeries,
+            'diseases' => $this->diseases,
+            'family_history' => $this->family_history,
+            'emergency_contact_name' => $this->emergency_contact_name,
+            'emergency_contact_phone' => $this->emergency_contact_phone,
+            'emergency_contact_relationship' => $this->emergency_contact_relationship,
         ];
     }
 }

@@ -17,11 +17,10 @@ class ProfileResource extends JsonResource
         return [
             ...UserResource::make($this->user)->toArray($request),
             'avatar' => $this->avatar,
-            'address' => $this->address ?? null,
-            'country' => $this->country ?? null,
-            'state' => $this->state ?? null,
-            'city' => $this->city ?? null,
-            'street' => $this->street ?? null,
+            'country' => $this->country,
+            'state' => $this->state,
+            'city' => $this->city,
+            'street' => $this->street,
         ];
     }
 }

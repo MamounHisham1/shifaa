@@ -15,6 +15,7 @@ class ScheduleResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'doctor' => DoctorResource::make($this->doctor),
             'appointments' => AppointmentResource::collection($this->appointments),
             'date' => $this->date,
@@ -24,7 +25,6 @@ class ScheduleResource extends JsonResource
             'is_available' => $this->is_available,
             'notes' => $this->notes,
             'max_appointments' => $this->max_appointments,
-            'link' => route('schedules.show', $this->id),
         ];
     }
 }

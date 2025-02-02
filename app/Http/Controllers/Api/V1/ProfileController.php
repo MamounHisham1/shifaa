@@ -39,7 +39,7 @@ class ProfileController extends Controller
      */
     public function show(Profile $profile)
     {
-        //
+        return ProfileResource::make($profile);
     }
 
     /**

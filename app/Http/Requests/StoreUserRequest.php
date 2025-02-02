@@ -26,7 +26,7 @@ class StoreUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', Password::defaults()],
-            'type' => ['required', 'string', 'in:patient,doctor'],
+            'type' => ['required', 'string', 'in:admin,doctor,patient'],
         ];
     }
 }

@@ -100,19 +100,23 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreScheduleRequest $request)
     {
-        //
+        $schedules = Schedule::where('doctor_id', $request->doctor_id)->where('date', $request->date)->get();
+
+        foreach ($schedules as $schedule) {
+            if ($schedule->start_time <= $request->start_time && $schedule->end_time >= $request->start_time) {
+                return response()->json(['error' => 'Time slot already exists'], 400);
+            }
+
+            if ($schedule->start_time <= $request->end_time && $schedule->end_time >= $request->end_time) {
+                return response()->json(['error' => 'Time slot already exists'], 400);
+            }
+        }
+
+        return ScheduleResource::make(Schedule::create($request->validated()));
     }
 
     /**
@@ -121,14 +125,6 @@ class ScheduleController extends Controller
     public function show(Schedule $schedule)
     {
         return ScheduleResource::make($schedule);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Schedule $schedule)
-    {
-        //
     }
 
     /**

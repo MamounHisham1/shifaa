@@ -15,6 +15,7 @@ class AppointmentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'patient' => PatientResource::make($this->patient),
             'appointment_datetime' => $this->appointment_datetime,
             'status' => $this->status,
@@ -24,7 +25,6 @@ class AppointmentResource extends JsonResource
             'notes' => $this->notes,
             'cancellation_reason' => $this->cancellation_reason,
             'is_confirmed' => $this->is_confirmed,
-            'link' => route('appointments.show', $this->id),
         ];
     }
 }

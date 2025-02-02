@@ -102,7 +102,7 @@ class PatientController extends Controller
      */
     public function store(StorePatientsRequest $request)
     {
-        //
+        return PatientResource::make(Patient::create($request->validated()));
     }
 
     /**

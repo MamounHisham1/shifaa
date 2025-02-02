@@ -22,7 +22,7 @@ class StoreDoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profile_id' => ['required', 'integer', 'exists:profiles,id'], 
+            'profile_id' => ['required', 'integer', 'exists:profiles,id', 'unique:doctors,profile_id', 'unique:patients,profile_id'], 
             'speciality' => ['required', 'string', 'max:255'],
             'qualification' => ['required', 'string'],
             'experience' => ['required', 'string', 'max:255'],
