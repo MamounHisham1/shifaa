@@ -7,6 +7,7 @@ use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Requests\UpdateAppointmentRequest;
 use App\Http\Resources\Api\V1\AppointmentResource;
 use App\Models\Appointment;
+use App\Services\AppointmentService;
 use DB;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -19,7 +20,7 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
-        $appointments = QueryBuilder::for(Appointment::class)            
+        $appointments = QueryBuilder::for(Appointment::class)
             ->allowedFilters([
                 'status',
                 'visit_type',
@@ -66,15 +67,6 @@ class AppointmentController extends Controller
                     });
                 }),
 
-                AllowedFilter::callback('date_range', function ($query, $value) {
-                    if (isset($value['from'])) {
-                        $query->where('appointment_datetime', '>=', $value['from']);
-                    }
-                    if (isset($value['to'])) {
-                        $query->where('appointment_datetime', '<=', $value['to']);
-                    }
-                }),
-
                 AllowedFilter::callback('reason_for_visit', function ($query, $value) {
                     $query->where('reason_for_visit', 'like', "%{$value}%");
                 }),
@@ -86,11 +78,11 @@ class AppointmentController extends Controller
                 }),
             ])
             ->allowedSorts([
-                'appointment_datetime',
                 'status',
                 'visit_type',
                 'type',
                 'is_confirmed',
+                'created_at',
             ])
             ->paginate($request->per_page ?? 15)
             ->appends($request->query());
@@ -98,19 +90,17 @@ class AppointmentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreAppointmentRequest $request)
     {
-        //
+        $service = new AppointmentService();
+
+        if(! $service->readyForBook($request)) {
+            return response()->json(['message' => 'You can not book appointment at this time.'], 400);
+        }
+
+        return AppointmentResource::make(Appointment::create($request->validated()));
     }
 
     /**
@@ -119,14 +109,6 @@ class AppointmentController extends Controller
     public function show(Appointment $appointment)
     {
         return AppointmentResource::make($appointment);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Appointment $appointment)
-    {
-        //
     }
 
     /**

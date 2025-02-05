@@ -22,7 +22,6 @@ class AppointmentFactory extends Factory
         return [
             'patient_id' => Patient::inRandomOrder()->first()->id,
             'schedule_id' => Schedule::inRandomOrder()->first()->id,
-            'appointment_datetime' => fake()->dateTimeBetween('now', '+1 month'),
             'status' => fake()->randomElement(['scheduled', 'completed', 'canceled', 'no-show']),
             'reason_for_visit' => fake()->sentence(10),
             'type' => fake()->randomElement(['in-person', 'virtual']),

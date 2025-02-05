@@ -11,7 +11,7 @@ class StoreAppointmentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class StoreAppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'patient_id' => ['required', 'exists:patients,id'],
+            'schedule_id' => ['required', 'exists:schedules,id'],
+            'status' => ['sometimes', 'string', 'in:scheduled,rescheduled,cancelled,completed'],
+            'reason_for_visit' => ['required', 'string', 'max:500'],
+            'visit_type' => ['required', 'string', 'in:new,follow-up'],
+            'type' => ['required', 'string', 'in:in-person,remote'],
+            'notes' => ['nullable', 'string', 'max:1000'],
+            'cancellation_reason' => ['nullable', 'string', 'max:500'],
+            'is_confirmed' => ['sometimes', 'boolean']
         ];
     }
 }

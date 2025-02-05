@@ -17,18 +17,19 @@ class ScheduleFactory extends Factory
      */
     public function definition(): array
     {
-        $startTime = fake()->time('H:i:s'); // Random start time before 5 PM
-        $endTime = fake()->time('H:i:s', strtotime($startTime) + 60 * 60 * 2); // Add 2 hours to start time
+        $startTime = fake()->time('H:i:s');
+        $endTime = fake()->time('H:i:s', strtotime($startTime) + 60 * 60 * 2);
 
         return [
-            'doctor_id' => Doctor::inRandomOrder()->first()->id, // Random doctor ID
-            'date' => fake()->dateTimeBetween('now', '+1 month')->format('Y-m-d'), // Date within the next month
-            'start_time' => $startTime, // Random start time
-            'end_time' => $endTime, // Corresponding end time
-            'is_available' => fake()->boolean(80), // 80% chance the schedule is available
-            'status' => fake()->randomElement(['active', 'inactive', 'cancelled']), // Schedule status
-            'notes' => fake()->optional()->sentence(10), // Random notes or null
-            'max_appointments' => fake()->optional()->numberBetween(5, 20), // Random max appointments or null
+            'doctor_id' => Doctor::inRandomOrder()->first()->id,
+            'slot_by_min' => fake()->numberBetween(1, 60),
+            'day' => fake()->dayOfWeek(),
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'is_available' => fake()->boolean(80),
+            'status' => fake()->randomElement(['active', 'inactive', 'cancelled']),
+            'notes' => fake()->optional()->sentence(10),
+            'max_appointments' => fake()->numberBetween(5, 20),
         ];
     }
 }

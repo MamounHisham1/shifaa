@@ -18,76 +18,77 @@ class PatientController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $patients = QueryBuilder::for(Patient::class)
-        ->allowedFilters([
-            'allergies',
-            'medications',
-            'surgeries',
-            'diseases',
-            'family_history',
-            'emergency_contact_name',
-            'emergency_contact_phone',
+    {
+        $patients = QueryBuilder::for(Patient::class)
+            ->allowedFilters([
+                'allergies',
+                'medications',
+                'surgeries',
+                'diseases',
+                'family_history',
+                'emergency_contact_name',
+                'emergency_contact_phone',
 
-            AllowedFilter::exact('blood_group'),
-            AllowedFilter::exact('emergency_contact_relationship'),
+                AllowedFilter::exact('blood_group'),
+                AllowedFilter::exact('emergency_contact_relationship'),
 
-            AllowedFilter::callback('name', function ($query, $value) {
-                $query->whereHas('profile', function ($query) use ($value) {
-                    $query->whereHas('user', function ($query) use ($value) {
-                        $query->where('name', 'like', "%{$value}%");
+                AllowedFilter::callback('name', function ($query, $value) {
+                    $query->whereHas('profile', function ($query) use ($value) {
+                        $query->whereHas('user', function ($query) use ($value) {
+                            $query->where('name', 'like', "%{$value}%");
+                        });
                     });
-                });
-            }),
-            AllowedFilter::callback('city', function ($query, $value) {
-                $query->whereHas('profile', function ($query) use ($value) {
-                    $query->whereRelation('city', 'like', "%{$value}%");
-                });
-            }),
-            AllowedFilter::callback('state', function ($query, $value) {
-                $query->whereHas('profile', function ($query) use ($value) {
-                    $query->where('state', 'like', "%{$value}%");
-                });
-            }),
-            AllowedFilter::callback('country', function ($query, $value) {
-                $query->whereHas('profile', function ($query) use ($value) {
-                    $query->where('country', 'like', "%{$value}%");
-                });
-            }),
+                }),
+                AllowedFilter::callback('city', function ($query, $value) {
+                    $query->whereHas('profile', function ($query) use ($value) {
+                        $query->whereRelation('city', 'like', "%{$value}%");
+                    });
+                }),
+                AllowedFilter::callback('state', function ($query, $value) {
+                    $query->whereHas('profile', function ($query) use ($value) {
+                        $query->where('state', 'like', "%{$value}%");
+                    });
+                }),
+                AllowedFilter::callback('country', function ($query, $value) {
+                    $query->whereHas('profile', function ($query) use ($value) {
+                        $query->where('country', 'like', "%{$value}%");
+                    });
+                }),
 
-            AllowedFilter::callback('weight', function ($query, $value) {
-                if (isset($value['lt'])) {
-                    $query->where('weight', '<', $value['lt']);
-                }
-                if (isset($value['gt'])) {
-                    $query->where('weight', '>', $value['gt']);
-                }
-                if (isset($value['eq'])) {
-                    $query->where('weight', '=', $value['eq']);
-                }
-            }),
-            AllowedFilter::callback('height', function ($query, $value) {
-                if (isset($value['lt'])) {
-                    $query->where('height', '<', $value['lt']);
-                }
-                if (isset($value['gt'])) {
-                    $query->where('height', '>', $value['gt']);
-                }
-                if (isset($value['eq'])) {
-                    $query->where('height', '=', $value['eq']);
-                }
-            }),
-        ])
-        ->allowedSorts([
-            'weight',
-            'height',
-            'blood_group',
-        ])
-        ->paginate($request->per_page ?? 15)
-        ->appends($request->query());
+                AllowedFilter::callback('weight', function ($query, $value) {
+                    if (isset($value['lt'])) {
+                        $query->where('weight', '<', $value['lt']);
+                    }
+                    if (isset($value['gt'])) {
+                        $query->where('weight', '>', $value['gt']);
+                    }
+                    if (isset($value['eq'])) {
+                        $query->where('weight', '=', $value['eq']);
+                    }
+                }),
+                AllowedFilter::callback('height', function ($query, $value) {
+                    if (isset($value['lt'])) {
+                        $query->where('height', '<', $value['lt']);
+                    }
+                    if (isset($value['gt'])) {
+                        $query->where('height', '>', $value['gt']);
+                    }
+                    if (isset($value['eq'])) {
+                        $query->where('height', '=', $value['eq']);
+                    }
+                }),
+            ])
+            ->allowedSorts([
+                'weight',
+                'height',
+                'blood_group',
+                'created_at',
+            ])
+            ->paginate($request->per_page ?? 15)
+            ->appends($request->query());
 
-    return PatientResource::collection($patients);
-}
+        return PatientResource::collection($patients);
+    }
 
     /**
      * Show the form for creating a new resource.

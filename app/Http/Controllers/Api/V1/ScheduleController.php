@@ -7,6 +7,7 @@ use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Http\Resources\Api\V1\ScheduleResource;
 use App\Models\Schedule;
+use App\Services\ScheduleService;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -20,7 +21,7 @@ class ScheduleController extends Controller
     {
         $schedules = QueryBuilder::for(Schedule::class)
             ->allowedFilters([
-                'date',
+                'day',
                 'start_time',
                 'end_time',
                 'is_available',
@@ -68,14 +69,7 @@ class ScheduleController extends Controller
                         $query->where('max_appointments', '=', $value['eq']);
                     }
                 }),
-                AllowedFilter::callback('date_range', function ($query, $value) {
-                    if (isset($value['from'])) {
-                        $query->where('date', '>=', $value['from']);
-                    }
-                    if (isset($value['to'])) {
-                        $query->where('date', '<=', $value['to']);
-                    }
-                }),
+
                 AllowedFilter::callback('time_range', function ($query, $value) {
                     if (isset($value['start'])) {
                         $query->where('start_time', '>=', $value['start']);
@@ -86,12 +80,12 @@ class ScheduleController extends Controller
                 }),
             ])
             ->allowedSorts([
-                'date',
                 'start_time',
                 'end_time',
                 'is_available',
                 'status',
                 'max_appointments',
+                'created_at',
             ])
             ->paginate($request->per_page ?? 15)
             ->appends($request->query());
@@ -104,16 +98,10 @@ class ScheduleController extends Controller
      */
     public function store(StoreScheduleRequest $request)
     {
-        $schedules = Schedule::where('doctor_id', $request->doctor_id)->where('date', $request->date)->get();
+        $service = new ScheduleService();
 
-        foreach ($schedules as $schedule) {
-            if ($schedule->start_time <= $request->start_time && $schedule->end_time >= $request->start_time) {
-                return response()->json(['error' => 'Time slot already exists'], 400);
-            }
-
-            if ($schedule->start_time <= $request->end_time && $schedule->end_time >= $request->end_time) {
-                return response()->json(['error' => 'Time slot already exists'], 400);
-            }
+        if(! $service->readyForCreate($request)) {
+            return response()->json(['message' => 'Time slot already exists for this doctor in ' . ucfirst($request->day)], 400);
         }
 
         return ScheduleResource::make(Schedule::create($request->validated()));

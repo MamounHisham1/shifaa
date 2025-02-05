@@ -83,6 +83,7 @@ class DoctorController extends Controller
                 'experience',
                 'consultation_fee',
                 'status',
+                'created_at',
                 AllowedSort::field('profile.user.name', 'profile.users.name'),
             ])
             ->paginate($request->per_page ?? 15)

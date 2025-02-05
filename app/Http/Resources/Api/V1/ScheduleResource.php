@@ -17,8 +17,8 @@ class ScheduleResource extends JsonResource
         return [
             'id' => $this->id,
             'doctor' => DoctorResource::make($this->doctor),
-            'appointments' => AppointmentResource::collection($this->appointments),
-            'date' => $this->date,
+            'appointments' => $this->mergeWhen($this->relationLoaded('appointments'), AppointmentResource::collection($this->appointments)),
+            'slot_by_min' => $this->slot_by_min,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'status' => $this->status,

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->integer('max_appointments')->nullable();
             $table->timestamps();
-            $table->unique(['doctor_id', 'date', 'start_time']);
         });
     }
 

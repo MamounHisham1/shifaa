@@ -25,7 +25,7 @@ class StoreDoctorRequest extends FormRequest
             'profile_id' => ['required', 'integer', 'exists:profiles,id', 'unique:doctors,profile_id', 'unique:patients,profile_id'], 
             'speciality' => ['required', 'string', 'max:255'],
             'qualification' => ['required', 'string'],
-            'experience' => ['required', 'string', 'max:255'],
+            'experience' => ['required', 'integer'],
             'available_days' => ['nullable', 'string', 'max:255'], 
             'consultation_fee' => ['nullable', 'integer', 'min:0'],
             'license_number' => ['nullable', 'string', 'max:255'],

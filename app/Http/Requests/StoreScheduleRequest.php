@@ -23,7 +23,8 @@ class StoreScheduleRequest extends FormRequest
     {
         return [
             'doctor_id' => ['required', 'exists:doctors,id'],
-            'date' => ['required', 'date'],
+            'day' => ['required', 'in:saturday,sunday,monday,tuesday,wednesday,thursday,friday'],
+            'slot_by_min' => ['sometimes', 'integer'],
             'start_time' => ['required', 'date_format:H:i'],
             'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
             'is_available' => ['sometimes', 'boolean'],

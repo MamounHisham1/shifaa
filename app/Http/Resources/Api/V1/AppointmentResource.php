@@ -17,7 +17,7 @@ class AppointmentResource extends JsonResource
         return [
             'id' => $this->id,
             'patient' => PatientResource::make($this->patient),
-            'appointment_datetime' => $this->appointment_datetime,
+            'schedule' => ScheduleResource::make($this->schedule),
             'status' => $this->status,
             'visit_type' => $this->visit_type,
             'reason_for_visit' => $this->reason_for_visit,

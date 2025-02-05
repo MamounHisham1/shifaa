@@ -16,7 +16,7 @@ class DoctorResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'personal_details' => ProfileResource::make($this->profile),
+            'profile' => ProfileResource::make($this->profile),
             'speciality' => $this->speciality,
             'qualification' => $this->qualification,
             'experience' => $this->experience,
