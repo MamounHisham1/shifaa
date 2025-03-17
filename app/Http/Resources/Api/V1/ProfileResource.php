@@ -16,7 +16,7 @@ class ProfileResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            ...UserResource::make($this->user)->toArray($request),
+            'user' => UserResource::make($this->whenLoaded('user')),
             'avatar' => $this->avatar,
             'country' => $this->country,
             'state' => $this->state,

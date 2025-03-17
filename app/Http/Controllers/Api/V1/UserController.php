@@ -24,10 +24,6 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $request->merge([
-            'password' => Hash::make($request->password),
-        ]);
-
         return UserResource::make(User::create($request->all()));
     }
 
