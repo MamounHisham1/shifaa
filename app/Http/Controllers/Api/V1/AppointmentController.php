@@ -27,6 +27,7 @@ class AppointmentController extends Controller
                 'type',
                 'is_confirmed',
 
+                // the doctor endpoint will be like this: /api/v1/appointments?doctor[speciality]=cardiologist&doctor[qualification]=md&doctor[name]=John Doe&doctor[city]=New York&doctor[state]=NY&doctor[country]=USA
                 AllowedFilter::callback('doctor', function ($query, $value) {
                     $query->whereHas('schedule', function ($query) use ($value) {
                         $query->whereHas('doctor', function ($query) use ($value) {
@@ -48,6 +49,7 @@ class AppointmentController extends Controller
                     });
                 }),
 
+                // the patient endpoint will be like this: /api/v1/appointments?patient[name]=John Doe&patient[city]=New York&patient[state]=NY&patient[country]=USA
                 AllowedFilter::callback('patient', function ($query, $value) {
                     $query->whereHas('patient', function ($query) use ($value) {
                         $query->whereHas('user', function ($query) use ($value) {
@@ -67,12 +69,17 @@ class AppointmentController extends Controller
                     });
                 }),
 
+                // the reason_for_visit endpoint will be like this: /api/v1/appointments?reason_for_visit[like]=heart
                 AllowedFilter::callback('reason_for_visit', function ($query, $value) {
                     $query->where('reason_for_visit', 'like', "%{$value}%");
                 }),
+
+                // the notes endpoint will be like this: /api/v1/appointments?notes[like]=heart
                 AllowedFilter::callback('notes', function ($query, $value) {
                     $query->where('notes', 'like', "%{$value}%");
                 }),
+
+                // the cancellation_reason endpoint will be like this: /api/v1/appointments?cancellation_reason[like]=heart
                 AllowedFilter::callback('cancellation_reason', function ($query, $value) {
                     $query->where('cancellation_reason', 'like', "%{$value}%");
                 }),

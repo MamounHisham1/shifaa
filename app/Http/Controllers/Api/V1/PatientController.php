@@ -32,6 +32,7 @@ class PatientController extends Controller
                 AllowedFilter::exact('blood_group'),
                 AllowedFilter::exact('emergency_contact_relationship'),
 
+                // the name endpoint will be like this: /api/v1/patients?name=John Doe
                 AllowedFilter::callback('name', function ($query, $value) {
                     $query->whereHas('profile', function ($query) use ($value) {
                         $query->whereHas('user', function ($query) use ($value) {
@@ -39,22 +40,29 @@ class PatientController extends Controller
                         });
                     });
                 }),
+
+                // the city endpoint will be like this: /api/v1/patients?city=New York
                 AllowedFilter::callback('city', function ($query, $value) {
                     $query->whereHas('profile', function ($query) use ($value) {
                         $query->whereRelation('city', 'like', "%{$value}%");
                     });
                 }),
+
+                // the state endpoint will be like this: /api/v1/patients?state=NY
                 AllowedFilter::callback('state', function ($query, $value) {
                     $query->whereHas('profile', function ($query) use ($value) {
                         $query->where('state', 'like', "%{$value}%");
                     });
                 }),
-                AllowedFilter::callback('country', function ($query, $value) {
+
+                // the country endpoint will be like this: /api/v1/patients?country=USA
+                    AllowedFilter::callback('country', function ($query, $value) {
                     $query->whereHas('profile', function ($query) use ($value) {
                         $query->where('country', 'like', "%{$value}%");
                     });
                 }),
 
+                // the weight endpoint will be like this: /api/v1/patients?weight[lt]=100&weight[gt]=200&weight[eq]=50
                 AllowedFilter::callback('weight', function ($query, $value) {
                     if (isset($value['lt'])) {
                         $query->where('weight', '<', $value['lt']);
@@ -66,6 +74,8 @@ class PatientController extends Controller
                         $query->where('weight', '=', $value['eq']);
                     }
                 }),
+
+                // the height endpoint will be like this: /api/v1/patients?height[lt]=100&height[gt]=200&height[eq]=50
                 AllowedFilter::callback('height', function ($query, $value) {
                     if (isset($value['lt'])) {
                         $query->where('height', '<', $value['lt']);

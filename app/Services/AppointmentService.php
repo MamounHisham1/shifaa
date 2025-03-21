@@ -23,6 +23,8 @@ class AppointmentService
             return false;
         }
 
+        
+
         if($schedule->max_appointments <= $schedule->appointments->count()) {
             return false;
         }

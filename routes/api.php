@@ -18,9 +18,9 @@ Route::group(['prefix' => 'v1'], function () {
         return $request->user();
     })->middleware('auth:sanctum');
     Route::apiResource('profiles', ProfileController::class)->middleware('auth:sanctum');
-    Route::apiResource('doctors', DoctorController::class)->middleware('auth:sanctum');
+    Route::apiResource('doctors', DoctorController::class);
     Route::apiResource('patients', PatientController::class)->middleware('auth:sanctum');
-    Route::apiResource('schedules', ScheduleController::class)->middleware('auth:sanctum');
-    Route::apiResource('appointments', AppointmentController::class)->middleware('auth:sanctum'); 
+    Route::apiResource('schedules', ScheduleController::class);
+    Route::apiResource('appointments', AppointmentController::class); 
 });
 

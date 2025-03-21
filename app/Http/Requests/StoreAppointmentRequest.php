@@ -29,8 +29,6 @@ class StoreAppointmentRequest extends FormRequest
             'visit_type' => ['required', 'string', 'in:new,follow-up'],
             'type' => ['required', 'string', 'in:in-person,remote'],
             'notes' => ['nullable', 'string', 'max:1000'],
-            'cancellation_reason' => ['nullable', 'string', 'max:500'],
-            'is_confirmed' => ['sometimes', 'boolean']
         ];
     }
 }

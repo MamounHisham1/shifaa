@@ -21,24 +21,39 @@ class ScheduleController extends Controller
     {
         $schedules = QueryBuilder::for(Schedule::class)
             ->allowedFilters([
-                'day',
                 'start_time',
                 'end_time',
                 'is_available',
                 'status',
 
+                // the date endpoint will be like this: /api/v1/schedules?date[start]=2025-01-01&date[end]=2025-01-31
+                AllowedFilter::callback('date', function ($query, $value) {
+                    if (isset($value['start'])) {
+                        $query->where('date', '>=', $value['start']);
+                    }
+                    if (isset($value['end'])) {
+                        $query->where('date', '<=', $value['end']);
+                    }
+                    if(isset($value['eq'])) {
+                        $query->where('date', '=', $value['eq']);
+                    }
+                }),
+
+                
+                
+                // the doctor endpoint will be like this: /api/v1/schedules?doctor[speciality]=cardiologist&doctor[qualification]=md&doctor[name]=John Doe&doctor[city]=New York&doctor[state]=NY&doctor[country]=USA
                 AllowedFilter::callback('doctor', function ($query, $value) {
                     $query->whereHas('doctor', function ($query) use ($value) {
+                        if (isset($value['id'])) {
+                            $query->where('id', $value['id']);
+                        }
                         if (isset($value['speciality'])) {
                             $query->where('speciality', 'like', "%{$value['speciality']}%");
                         }
                         if (isset($value['qualification'])) {
                             $query->where('qualification', 'like', "%{$value['qualification']}%");
                         }
-                        $query->whereHas('user', function ($query) use ($value) {
-                            if (isset($value['name'])) {
-                                $query->where('name', 'like', "%{$value['name']}%");
-                            }
+                        $query->whereHas('profile', function ($query) use ($value) {
                             if (isset($value['city'])) {
                                 $query->where('city', 'like', "%{$value['city']}%");
                             }
@@ -52,6 +67,7 @@ class ScheduleController extends Controller
                     });
                 }),
 
+                // the max_appointments endpoint will be like this: /api/v1/schedules?max_appointments[gt]=10&max_appointments[gte]=20&max_appointments[lt]=30&max_appointments[lte]=40&max_appointments[eq]=50
                 AllowedFilter::callback('max_appointments', function ($query, $value) {
                     if (isset($value['gt'])) {
                         $query->where('max_appointments', '>', $value['gt']);
@@ -70,6 +86,7 @@ class ScheduleController extends Controller
                     }
                 }),
 
+                // the time_range endpoint will be like this: /api/v1/schedules?time_range[start]=10:00:00&time_range[end]=15:00:00
                 AllowedFilter::callback('time_range', function ($query, $value) {
                     if (isset($value['start'])) {
                         $query->where('start_time', '>=', $value['start']);
@@ -90,6 +107,7 @@ class ScheduleController extends Controller
             ->paginate($request->per_page ?? 15)
             ->appends($request->query());
 
+        $schedules->load('slots');
         return ScheduleResource::collection($schedules);
     }
 
@@ -101,7 +119,7 @@ class ScheduleController extends Controller
         $service = new ScheduleService();
 
         if(! $service->readyForCreate($request)) {
-            return response()->json(['message' => 'Time slot already exists for this doctor in ' . ucfirst($request->day)], 400);
+            return response()->json(['message' => 'Time slot already exists for this doctor in ' . $request->date], 400);
         }
 
         return ScheduleResource::make(Schedule::create($request->validated()));

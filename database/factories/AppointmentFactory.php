@@ -28,7 +28,6 @@ class AppointmentFactory extends Factory
             'visit_type' => fake()->randomElement(['new', 'follow-up']),
             'notes' => fake()->optional()->paragraph(),
             'cancellation_reason' => fake()->optional()->sentence(),
-            'is_confirmed' => fake()->boolean(70),
         ];
     }
 }

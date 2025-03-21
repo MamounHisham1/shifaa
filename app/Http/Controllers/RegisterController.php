@@ -31,8 +31,7 @@ class RegisterController extends Controller
 
         $profile = $user->profile()->create($profileData);
 
-        // dd($profile);
-       $profile->load('user');
+        $profile->load('user');
         return ProfileResource::make($profile);
     }
 }

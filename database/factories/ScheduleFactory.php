@@ -17,13 +17,13 @@ class ScheduleFactory extends Factory
      */
     public function definition(): array
     {
-        $startTime = fake()->time('H:i:s');
-        $endTime = fake()->time('H:i:s', strtotime($startTime) + 60 * 60 * 2);
+        $startTime = fake()->time('H:i');
+        $endTime = fake()->time('H:i', $startTime);
 
         return [
             'doctor_id' => Doctor::inRandomOrder()->first()->id,
             'slot_by_min' => fake()->numberBetween(1, 60),
-            'day' => fake()->dayOfWeek(),
+            'date' => fake()->dateTimeBetween('+1 day', '+1 year'),
             'start_time' => $startTime,
             'end_time' => $endTime,
             'is_available' => fake()->boolean(80),

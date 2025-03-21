@@ -24,7 +24,6 @@ class AppointmentResource extends JsonResource
             'type' => $this->type,
             'notes' => $this->notes,
             'cancellation_reason' => $this->cancellation_reason,
-            'is_confirmed' => $this->is_confirmed,
         ];
     }
 }

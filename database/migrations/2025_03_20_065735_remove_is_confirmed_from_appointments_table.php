@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('schedules', function (Blueprint $table) {
-            $table->dropColumn('date');
+        Schema::table('appointments', function (Blueprint $table) {
+            $table->dropColumn('is_confirmed');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('schedules', function (Blueprint $table) {
-            $table->date('date');
+        Schema::table('appointments', function (Blueprint $table) {
+            $table->boolean('is_confirmed')->default(false);
         });
     }
 };

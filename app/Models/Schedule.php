@@ -23,4 +23,9 @@ class Schedule extends Model
     {
         return $this->hasMany(Appointment::class);
     }
+
+    public function slots(): HasMany
+    {
+        return $this->hasMany(Slot::class);
+    }
 }
