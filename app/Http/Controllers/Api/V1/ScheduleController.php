@@ -24,7 +24,7 @@ class ScheduleController extends Controller
                 'start_time',
                 'end_time',
                 'is_available',
-                'status',
+                AllowedFilter::exact('status'),
 
                 // the date endpoint will be like this: /api/v1/schedules?date[start]=2025-01-01&date[end]=2025-01-31
                 AllowedFilter::callback('date', function ($query, $value) {
@@ -108,6 +108,7 @@ class ScheduleController extends Controller
             ->appends($request->query());
 
         $schedules->load('slots');
+        $schedules->load('doctor');
         return ScheduleResource::collection($schedules);
     }
 

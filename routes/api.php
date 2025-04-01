@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\DoctorController;
 use App\Http\Controllers\Api\V1\PatientController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\ScheduleController;
+use App\Http\Controllers\Api\V1\SlotController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Http\Request;
@@ -21,6 +22,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::apiResource('doctors', DoctorController::class);
     Route::apiResource('patients', PatientController::class)->middleware('auth:sanctum');
     Route::apiResource('schedules', ScheduleController::class);
+    Route::apiResource('slots', SlotController::class);
     Route::apiResource('appointments', AppointmentController::class); 
+    Route::get('/available-dates', [AppointmentController::class, 'availableDates']);
 });
 

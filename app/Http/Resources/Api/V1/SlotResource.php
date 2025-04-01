@@ -17,8 +17,8 @@ class SlotResource extends JsonResource
         return [
             'id' => $this->id,
             'schedule' => ScheduleResource::make($this->whenLoaded('schedule')),
-            'appointment' => $this->whenLoaded('appointment'),
-            'patient' => $this->whenLoaded('patient'),
+            'patient' => PatientResource::make($this->whenLoaded('patient')),
+            'appointment' => AppointmentResource::make($this->whenLoaded('appointment')),
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'status' => $this->status,

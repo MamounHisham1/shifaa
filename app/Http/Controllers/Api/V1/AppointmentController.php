@@ -133,4 +133,14 @@ class AppointmentController extends Controller
     {
         //
     }
+
+    public function availableDates(Request $request)
+    {
+        $service = new AppointmentService();
+        $dates = $service->getAvailableDates($request);
+        if(isset($dates['error'])) {
+            return response()->json(['message' => $dates['error']], 404);
+        }
+        return response()->json(['dates' => $dates]);
+    }
 }

@@ -23,9 +23,4 @@ class Appointment extends Model
     {
         return $this->belongsTo(Schedule::class);
     }
-
-    public function slots(): HasMany
-    {
-        return $this->hasMany(Slot::class);
-    }
 }

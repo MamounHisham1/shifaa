@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
 
         Doctor::factory(100)->create();
         Patient::factory(400)->create();
-        Schedule::factory(300)->create();
-        Appointment::factory(300)->create();
+        Schedule::factory(10000)->create();
+        Appointment::factory(5000)->create();
     }
 }
