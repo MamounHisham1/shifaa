@@ -99,12 +99,12 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAppointmentRequest $request)
+public function store(StoreAppointmentRequest $request)
     {
         $service = new AppointmentService();
 
         if(! $service->readyForBook($request)) {
-            return response()->json(['message' => 'You can not book appointment at this time.'], 400);
+            return response()->json(['errors' => 'You can not book appointment at this time.'], 400);
         }
 
         return AppointmentResource::make(Appointment::create($request->validated()));
@@ -137,10 +137,10 @@ class AppointmentController extends Controller
     public function availableDates(Request $request)
     {
         $service = new AppointmentService();
-        $dates = $service->getAvailableDates($request);
+        $dates = $service->getAvailableDates($request->doctor_id);
         if(isset($dates['error'])) {
             return response()->json(['message' => $dates['error']], 404);
         }
-        return response()->json(['dates' => $dates]);
+        return response()->json(['dates' =>  $dates]);
     }
 }

@@ -31,17 +31,31 @@ class AppointmentService
         return true;
     }
 
-    public function getAvailableDates(Request $request)
+    public function getAvailableDates(int $doctorId)
     {
-        $doctor = Doctor::find($request->doctor_id);
+        $doctor = Doctor::find($doctorId);
         if(!$doctor) {
-            info('Doctor id' . $request->doctor_id . ' not found');
+            info('Doctor id' . $doctorId . ' not found');
             return ['error' => 'Doctor not found'];
         }
-        $dates = $doctor->schedules->where('status', 'active')->pluck('date');
-        if($dates->isEmpty()) {
+        $schedules = $doctor->schedules->where('status', 'active');
+        if($schedules->isEmpty()) {
             return ['error' => 'No available dates'];
         }
+        $schedules = $this->rejectFullSchedules($schedules);
+        $dates = $schedules->pluck('date');
         return $dates;
+    }
+
+    protected function rejectFullSchedules($schedules)
+    {
+        foreach($schedules as $schedule) {
+            if($schedule->max_appointments <= $schedule->appointments->count()) {
+                $schedules = $schedules->reject(function($item) use ($schedule) {
+                    return $item->id === $schedule->id;
+                });
+            }
+        }
+        return $schedules;
     }
 }
