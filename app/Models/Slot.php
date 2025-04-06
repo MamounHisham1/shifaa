@@ -44,7 +44,7 @@ class Slot extends Model
                 'schedule_id' => $schedule->id,
                 'start_time' => $currentTime->format('H:i'),
                 'end_time' => $slotEndTime->format('H:i'),
-                'status' => 'available'
+                'status' => SlotStatus::Available,
             ];
 
             $currentTime = $slotEndTime;

@@ -24,6 +24,7 @@ class StoreAppointmentRequest extends FormRequest
         return [
             'patient_id' => ['required', 'exists:patients,id'],
             'schedule_id' => ['required', 'exists:schedules,id'],
+            'slot_id' => ['required', 'exists:slots,id'],
             'status' => ['sometimes', 'string', 'in:scheduled,rescheduled,cancelled,completed'],
             'reason_for_visit' => ['required', 'string', 'max:500'],
             'visit_type' => ['required', 'string', 'in:new,follow-up'],

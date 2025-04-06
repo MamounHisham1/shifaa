@@ -7,6 +7,8 @@ use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Requests\UpdateAppointmentRequest;
 use App\Http\Resources\Api\V1\AppointmentResource;
 use App\Models\Appointment;
+use App\Models\Slot;
+use App\Enums\SlotStatus;
 use App\Services\AppointmentService;
 use DB;
 use Illuminate\Http\Request;
@@ -102,12 +104,22 @@ class AppointmentController extends Controller
 public function store(StoreAppointmentRequest $request)
     {
         $service = new AppointmentService();
+        $slot = Slot::find($request->slot_id);
+
+        if($slot->status !== SlotStatus::Available->value) {
+            return response()->json(['errors' => 'Slot is not available.'], 400);
+        }
 
         if(! $service->readyForBook($request)) {
             return response()->json(['errors' => 'You can not book appointment at this time.'], 400);
         }
 
-        return AppointmentResource::make(Appointment::create($request->validated()));
+        $slot->update([
+            'status' => SlotStatus::Booked,
+        ]);
+
+        $appointment = Appointment::create($request->validated());
+        return AppointmentResource::make($appointment);
     }
 
     /**
