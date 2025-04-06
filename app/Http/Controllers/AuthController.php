@@ -18,8 +18,7 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        $user = User::find($credentials['email']);
-        
+        $user = User::where('email', $credentials['email'])->first();
         if (!$user) {
             return response()->json(['message' => 'User not found'], 401);
         }
