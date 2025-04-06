@@ -38,11 +38,14 @@ class AppointmentService
             info('Doctor id' . $doctorId . ' not found');
             return ['error' => 'Doctor not found'];
         }
+
         $schedules = $doctor->schedules->where('status', 'active');
         if($schedules->isEmpty()) {
             return ['error' => 'No available dates'];
         }
+    
         $schedules = $this->rejectFullSchedules($schedules);
+        $schedules = $this->scheduleWithSlots($schedules);
         $dates = $schedules->pluck('date');
         return $dates;
     }
@@ -51,6 +54,18 @@ class AppointmentService
     {
         foreach($schedules as $schedule) {
             if($schedule->max_appointments <= $schedule->appointments->count()) {
+                $schedules = $schedules->reject(function($item) use ($schedule) {
+                    return $item->id === $schedule->id;
+                });
+            }
+        }
+        return $schedules;
+    }
+
+    protected function scheduleWithSlots($schedules)
+    {
+        foreach($schedules as $schedule) {
+            if($schedule->slots->isEmpty()) {
                 $schedules = $schedules->reject(function($item) use ($schedule) {
                     return $item->id === $schedule->id;
                 });
