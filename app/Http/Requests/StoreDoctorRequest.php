@@ -23,7 +23,7 @@ class StoreDoctorRequest extends FormRequest
     {
         return [
             'profile_id' => ['required', 'integer', 'exists:profiles,id', 'unique:doctors,profile_id', 'unique:patients,profile_id'], 
-            'speciality' => ['required', 'string', 'max:255'],
+            'specialty_id' => ['required', 'integer', 'exists:specialties,id'],
             'qualification' => ['required', 'string'],
             'experience' => ['required', 'integer'],
             'available_days' => ['nullable', 'string', 'max:255'], 

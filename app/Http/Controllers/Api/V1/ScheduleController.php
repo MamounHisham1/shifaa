@@ -41,14 +41,16 @@ class ScheduleController extends Controller
 
                 
                 
-                // the doctor endpoint will be like this: /api/v1/schedules?doctor[speciality]=cardiologist&doctor[qualification]=md&doctor[name]=John Doe&doctor[city]=New York&doctor[state]=NY&doctor[country]=USA
+                // the doctor endpoint will be like this: /api/v1/schedules?doctor[specialty]=cardiologist&doctor[qualification]=md&doctor[name]=John Doe&doctor[city]=New York&doctor[state]=NY&doctor[country]=USA
                 AllowedFilter::callback('doctor', function ($query, $value) {
                     $query->whereHas('doctor', function ($query) use ($value) {
                         if (isset($value['id'])) {
                             $query->where('id', $value['id']);
                         }
-                        if (isset($value['speciality'])) {
-                            $query->where('speciality', 'like', "%{$value['speciality']}%");
+                        if (isset($value['specialty'])) {
+                            $query->whereHas('doctor.specialty', function ($query) use ($value) {
+                                $query->where('name', $value['specialty']);
+                            });
                         }
                         if (isset($value['qualification'])) {
                             $query->where('qualification', 'like', "%{$value['qualification']}%");

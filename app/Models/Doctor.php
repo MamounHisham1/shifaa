@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
+
 class Doctor extends Model
 {
     /** @use HasFactory<\Database\Factories\DoctorFactory> */
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
@@ -21,5 +23,17 @@ class Doctor extends Model
     public function schedules(): HasMany
     {
         return $this->hasMany(Schedule::class);
+    }
+
+    public function specialty(): BelongsTo
+    {
+        return $this->belongsTo(Specialty::class);
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->profile->user->name,
+        ];
     }
 }

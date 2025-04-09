@@ -22,11 +22,17 @@ class DoctorController extends Controller
     {
         $doctors = QueryBuilder::for(Doctor::class)
             ->allowedFilters([
-                'speciality',
                 'qualification',
                 'bio',
                 AllowedFilter::exact('status'),
                 AllowedFilter::exact('available_days'),
+
+                // the specialty endpoint will be like this: /api/v1/doctors?specialty=Cardiology
+                AllowedFilter::callback('specialty', function ($query, $value) {
+                    $query->whereHas('specialty', function ($query) use ($value) {
+                        $query->where('name', $value);
+                    });
+                }),
 
                 // the name endpoint will be like this: /api/v1/doctors?name=John Doe
                 AllowedFilter::callback('name', function ($query, $value) {
@@ -88,7 +94,6 @@ class DoctorController extends Controller
                 }),
             ])
             ->allowedSorts([
-                'speciality',
                 'qualification',
                 'experience',
                 'consultation_fee',
@@ -100,6 +105,7 @@ class DoctorController extends Controller
             ->appends($request->query());
 
         $doctors->load('profile');
+        $doctors->load('profile.user');
         return DoctorResource::collection($doctors);
     }
 

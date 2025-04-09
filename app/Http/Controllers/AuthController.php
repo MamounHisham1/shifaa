@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Api\V1\PatientResource;
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -26,11 +28,15 @@ class AuthController extends Controller
         if (!Auth::attempt($credentials)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
-        
-        $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'token' => $token,
-        ]);
+        $patient = Patient::where('profile_id', $user->profile->id)->first();
+        
+        if (! $patient) {
+            return response()->json(['message' => 'Patient not found'], 401);
+        }
+
+        $patient->load('profile');
+        $patient->load('profile.user');
+        return PatientResource::make($patient);
     }
 }

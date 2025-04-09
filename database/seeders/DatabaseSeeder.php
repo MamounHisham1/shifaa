@@ -6,10 +6,11 @@ use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Schedule;
+use App\Models\Specialty;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Hash;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,9 +26,10 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        Doctor::factory(100)->create();
-        Patient::factory(400)->create();
-        Schedule::factory(10000)->create();
-        Appointment::factory(5000)->create();
+        Specialty::factory(23)->create();
+        Doctor::factory(300)->create();
+        Patient::factory(1000)->create();
+        Schedule::factory(5000)->create();
+        Appointment::factory(200)->create();
     }
 }

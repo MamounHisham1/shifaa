@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Profile;
-use App\Models\User;
+use App\Models\Specialty;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +21,7 @@ class DoctorFactory extends Factory
 
         return [
             'profile_id' => Profile::factory(),
-            'speciality' => fake()->randomElement(['Cardiologist', 'Orthopedic Surgeon', 'Neurologist', 'Dermatologist', 'Pediatrician', 'Psychiatrist', 'Gynecologist', 'General Surgeon']),
+            'specialty_id' => fake()->randomElement(Specialty::all()->pluck('id')),
             'qualification' => fake()->randomElement(['MBBS', 'MD', 'MBBS, MD', 'MBBS, MS', 'PhD in Medicine']),
             'experience' => fake()->numberBetween(1, 50),
             'available_days' => fake()->randomElement(['Monday, Wednesday, Friday', 'Tuesday, Thursday, Saturday', 'Monday to Friday']),

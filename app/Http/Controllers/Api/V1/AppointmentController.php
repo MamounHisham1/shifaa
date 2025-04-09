@@ -29,7 +29,7 @@ class AppointmentController extends Controller
                 'type',
                 'is_confirmed',
 
-                // the doctor endpoint will be like this: /api/v1/appointments?doctor[speciality]=cardiologist&doctor[qualification]=md&doctor[name]=John Doe&doctor[city]=New York&doctor[state]=NY&doctor[country]=USA
+                // the doctor endpoint will be like this: /api/v1/appointments?doctor[specialty]=cardiologist&doctor[qualification]=md&doctor[name]=John Doe&doctor[city]=New York&doctor[state]=NY&doctor[country]=USA
                 AllowedFilter::callback('doctor', function ($query, $value) {
                     $query->whereHas('schedule', function ($query) use ($value) {
                         $query->whereHas('doctor', function ($query) use ($value) {
