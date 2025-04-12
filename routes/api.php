@@ -18,19 +18,19 @@ use App\Http\Resources\Api\V1\ProfileResource;
 Route::group(['prefix' => 'v1'], function () {
     Route::post('/register', RegisterController::class)->name('register');
     Route::post('/login', AuthController::class)->name('login');
+    Route::apiResource('/profiles', ProfileController::class)->middleware('auth:sanctum');
+    Route::apiResource('/doctors', DoctorController::class);
+    Route::apiResource('/specialties', SpecialtyController::class);
+    Route::get('/search-doctors', SearchDoctor::class);
+    Route::apiResource('/patients', PatientController::class)->middleware('auth:sanctum');
+    Route::apiResource('/schedules', ScheduleController::class)->middleware('auth:sanctum');
+    Route::apiResource('/slots', SlotController::class)->middleware('auth:sanctum');
+    Route::apiResource('/appointments', AppointmentController::class)->middleware('auth:sanctum'); 
+    Route::get('/available-dates', [AppointmentController::class, 'availableDates'])->middleware('auth:sanctum');
     Route::get('/profile', function (Request $request) {
         $profile = $request->user()->profile;
         $profile->load('user');
         return ProfileResource::make($profile);
     })->middleware('auth:sanctum');
-    Route::apiResource('profiles', ProfileController::class)->middleware('auth:sanctum');
-    Route::apiResource('doctors', DoctorController::class);
-    Route::apiResource('/specialties', SpecialtyController::class);
-    Route::get('/search-doctors', SearchDoctor::class);
-    Route::apiResource('patients', PatientController::class)->middleware('auth:sanctum');
-    Route::apiResource('schedules', ScheduleController::class)->middleware('auth:sanctum');
-    Route::apiResource('slots', SlotController::class)->middleware('auth:sanctum');
-    Route::apiResource('appointments', AppointmentController::class)->middleware('auth:sanctum'); 
-    Route::get('/available-dates', [AppointmentController::class, 'availableDates'])->middleware('auth:sanctum');
 });
 
