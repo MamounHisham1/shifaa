@@ -1,66 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Shifaa - Medical Appointment Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Shifaa is a comprehensive medical appointment management system built with Laravel 11. It provides a robust API to manage doctors, patients, schedules, appointments, and more.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+*   **User Management:** User registration and authentication for doctors and patients.
+*   **Profile Management:** Users can manage their profiles.
+*   **Doctor Management:** Create, read, update, and delete doctor records.
+*   **Patient Management:** Create, read, update, and delete patient records.
+*   **Specialty Management:** Manage medical specialties.
+*   **Schedule Management:** Doctors can manage their schedules.
+*   **Appointment Management:** Patients can book appointments with doctors.
+*   **Search:** Search for doctors by specialty.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/shifaa.git
+    ```
+2.  Install dependencies:
+    ```bash
+    composer install
+    ```
+3.  Create a copy of the `.env.example` file and name it `.env`:
+    ```bash
+    cp .env.example .env
+    ```
+4.  Generate an application key:
+    ```bash
+    php artisan key:generate
+    ```
+5.  Configure your database in the `.env` file.
+6.  Run the database migrations:
+    ```bash
+    php artisan migrate
+    ```
+7.  Seed the database (optional):
+    ```bash
+    php artisan db:seed
+    ```
+8.  Start the development server:
+    ```bash
+    php artisan serve
+    ```
 
-## Learning Laravel
+## API Endpoints
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+All endpoints are prefixed with `/api/v1`.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| Method   | URI                               | Name                      | Description                      | Middleware    |
+| -------- | --------------------------------- | ------------------------- | -------------------------------- | ------------- |
+| POST     | `/register`                       | `register`                | Register a new user              |               |
+| POST     | `/login`                          | `login`                   | Log in a user                    |               |
+| GET|HEAD | `/profiles`                       | `profiles.index`          | Display a listing of the resource. | `auth:sanctum` |
+| POST     | `/profiles`                       | `profiles.store`          | Store a newly created resource in storage. | `auth:sanctum` |
+| GET|HEAD | `/profiles/{profile}`             | `profiles.show`           | Display the specified resource.  | `auth:sanctum` |
+| PUT|PATCH| `/profiles/{profile}`             | `profiles.update`         | Update the specified resource in storage. | `auth:sanctum` |
+| DELETE   | `/profiles/{profile}`             | `profiles.destroy`        | Remove the specified resource from storage. | `auth:sanctum` |
+| GET|HEAD | `/doctors`                        | `doctors.index`           | Display a listing of the resource. |               |
+| POST     | `/doctors`                        | `doctors.store`           | Store a newly created resource in storage. |               |
+| GET|HEAD | `/doctors/{doctor}`               | `doctors.show`            | Display the specified resource.  |               |
+| PUT|PATCH| `/doctors/{doctor}`               | `doctors.update`          | Update the specified resource in storage. |               |
+| DELETE   | `/doctors/{doctor}`               | `doctors.destroy`         | Remove the specified resource from storage. |               |
+| GET|HEAD | `/specialties`                    | `specialties.index`       | Display a listing of the resource. |               |
+| POST     | `/specialties`                    | `specialties.store`       | Store a newly created resource in storage. |               |
+| GET|HEAD | `/specialties/{specialty}`        | `specialties.show`        | Display the specified resource.  |               |
+| PUT|PATCH| `/specialties/{specialty}`        | `specialties.update`      | Update the specified resource in storage. |               |
+| DELETE   | `/specialties/{specialty}`        | `specialties.destroy`     | Remove the specified resource from storage. |               |
+| GET|HEAD | `/search-doctors`                 |                           | Search for doctors.              |               |
+| GET|HEAD | `/patients`                       | `patients.index`          | Display a listing of the resource. | `auth:sanctum` |
+| POST     | `/patients`                       | `patients.store`          | Store a newly created resource in storage. | `auth:sanctum` |
+| GET|HEAD | `/patients/{patient}`             | `patients.show`           | Display the specified resource.  | `auth:sanctum` |
+| PUT|PATCH| `/patients/{patient}`             | `patients.update`         | Update the specified resource in storage. | `auth:sanctum` |
+| DELETE   | `/patients/{patient}`             | `patients.destroy`        | Remove the specified resource from storage. | `auth:sanctum` |
+| GET|HEAD | `/schedules`                      | `schedules.index`         | Display a listing of the resource. | `auth:sanctum` |
+| POST     | `/schedules`                      | `schedules.store`         | Store a newly created resource in storage. | `auth:sanctum` |
+| GET|HEAD | `/schedules/{schedule}`           | `schedules.show`          | Display the specified resource.  | `auth:sanctum` |
+| PUT|PATCH| `/schedules/{schedule}`           | `schedules.update`        | Update the specified resource in storage. | `auth:sanctum` |
+| DELETE   | `/schedules/{schedule}`           | `schedules.destroy`       | Remove the specified resource from storage. | `auth:sanctum` |
+| GET|HEAD | `/slots`                          | `slots.index`             | Display a listing of the resource. | `auth:sanctum` |
+| POST     | `/slots`                          | `slots.store`             | Store a newly created resource in storage. | `auth:sanctum` |
+| GET|HEAD | `/slots/{slot}`                   | `slots.show`              | Display the specified resource.  | `auth:sanctum` |
+| PUT|PATCH| `/slots/{slot}`                   | `slots.update`            | Update the specified resource in storage. | `auth:sanctum` |
+| DELETE   | `/slots/{slot}`                   | `slots.destroy`           | Remove the specified resource from storage. | `auth:sanctum` |
+| GET|HEAD | `/appointments`                   | `appointments.index`      | Display a listing of the resource. | `auth:sanctum` |
+| POST     | `/appointments`                   | `appointments.store`      | Store a newly created resource in storage. | `auth:sanctum` |
+| GET|HEAD | `/appointments/{appointment}`     | `appointments.show`       | Display the specified resource.  | `auth:sanctum` |
+| PUT|PATCH| `/appointments/{appointment}`     | `appointments.update`     | Update the specified resource in storage. | `auth:sanctum` |
+| DELETE   | `/appointments/{appointment}`     | `appointments.destroy`    | Remove the specified resource from storage. | `auth:sanctum` |
+| GET|HEAD | `/available-dates`                |                           | Get available appointment dates. | `auth:sanctum` |
+| GET|HEAD | `/profile`                        |                           | Get the authenticated user's profile. | `auth:sanctum` |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Database Schema
 
-## Laravel Sponsors
+The database schema is defined by the migration files in the `database/migrations` directory. The main tables are:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+*   `users`: Stores user information.
+*   `profiles`: Stores user profiles.
+*   `doctors`: Stores doctor information.
+*   `patients`: Stores patient information.
+*   `specialties`: Stores medical specialties.
+*   `schedules`: Stores doctor schedules.
+*   `slots`: Stores available appointment slots.
+*   `appointments`: Stores appointment information.
 
-### Premium Partners
+## Usage
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+You can use a tool like [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/) to interact with the API.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Contributions are welcome! Please feel free to submit a pull request.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
